@@ -1,0 +1,47 @@
+﻿{
+  "CodeGenerationMode": 0,
+  "ContextClassName": "DboContext",
+  "ContextNamespace": "Entities",
+  "DefaultDacpacSchema": null,
+  "FilterSchemas": true,
+  "IncludeConnectionString": true,
+  "ModelNamespace": "Entities",
+  "OutputContextPath": "Entities\/Dbo",
+  "OutputPath": "Entities\/Dbo\/Models",
+  "ProjectRootNamespace": "GDemoExpress.DataBase",
+  "Schemas": [
+    {
+      "Name": "dbo"
+    }
+  ],
+  "SelectedHandlebarsLanguage": 0,
+  "SelectedToBeGenerated": 0,
+  "Tables": [
+    {
+      "Name": "dbo.players",
+      "ObjectType": 0
+    },
+    {
+      "Name": "dbo.playerinfos",
+      "ObjectType": 0
+    }
+  ],
+  "UiHint": ".example",
+  "UseBoolPropertiesWithoutDefaultSql": true,
+  "UseDatabaseNames": false,
+  "UseDbContextSplitting": true,
+  "UseFluentApiOnly": true,
+  "UseHandleBars": false,
+  "UseHierarchyId": false,
+  "UseInflector": true,
+  "UseLegacyPluralizer": false,
+  "UseManyToManyEntity": false,
+  "UseNoConstructor": true,
+  "UseNoDefaultConstructor": false,
+  "UseNoNavigations": true,
+  "UseNoObjectFilter": false,
+  "UseNodaTime": false,
+  "UseNullableReferences": true,
+  "UseSchemaFolders": false,
+  "UseSpatial": false
+}
