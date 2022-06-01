@@ -15,10 +15,14 @@ Gordon Demo Express
 
 #### Postgres
 
-初始化Migrations
+Create your first migration
 
-    dotnet ef migrations add InitialCreate
+    Visual Studio: Add-Migration InitialCreate
+
+    NET Core CLI: dotnet ef migrations add InitialCreate
     
-開發環境建立資料庫
+Create your database and schema
 
-    dotnet ef database updat
+    Visual Studio: Update-Database
+
+    NET Core CLI: dotnet ef database updat
