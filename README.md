@@ -7,11 +7,12 @@ Gordon Demo Express
 * MongoDB
 
 #### Nuget Package
-* Npgsql.EntityFrameworkCore.PostgreSQL
-* StackExchange.Redis
 * Scrutor
 * MediatR
 * NewId
+* Npgsql.EntityFrameworkCore.PostgreSQL
+* StackExchange.Redis
+* MongoDB.Driver
 
 #### Postgres
 
