@@ -6,8 +6,8 @@
   "FilterSchemas": true,
   "IncludeConnectionString": true,
   "ModelNamespace": "Entities",
-  "OutputContextPath": "Entities\/Dbo",
-  "OutputPath": "Entities\/Dbo\/Models",
+  "OutputContextPath": "Entities",
+  "OutputPath": "Entities\/Models",
   "ProjectRootNamespace": "GDemoExpress.DataBase",
   "Schemas": [
     {

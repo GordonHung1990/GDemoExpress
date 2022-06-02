@@ -2,6 +2,8 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using GDemoExpress.DependencyInjection;
 using GDemoExpress;
+using GDemoExpress.DataBase;
+using GDemoExpress.DataBase.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +49,8 @@ builder.Services
     (sp) => sp.GetRequiredService<RedisConnectionManager>().Database,
     (sp) => sp.GetRequiredService<MongoDBConnectionManager>().Database);
 
+//builder.Services.AddTransient<IStartupFilter, MigrationStartupFilter<DboContext>>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -61,5 +65,7 @@ _ = app.UseHttpsRedirection();
 _ = app.UseAuthorization();
 
 _ = app.MapControllers();
+
+_= app.MigrateDatabase();
 
 app.Run();

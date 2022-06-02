@@ -3,7 +3,7 @@ using MongoDB.Driver;
 using StackExchange.Redis;
 using GDemoExpress.Core;
 using GDemoExpress.Repositories;
-using GDemoExpress.DataBase.Entities.Dbo;
+using GDemoExpress.DataBase.Entities;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
