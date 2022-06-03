@@ -1,7 +1,6 @@
-﻿using MediatR;
+﻿using GDemoExpress.Core.Models;
+using MediatR;
 using Microsoft.Extensions.Logging;
-using GDemoExpress.Core.ApplicationServices;
-using GDemoExpress.Core.Models;
 
 namespace GDemoExpress.Core.ApplicationServices
 {

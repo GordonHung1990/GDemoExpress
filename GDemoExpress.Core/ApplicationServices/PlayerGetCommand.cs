@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using GDemoExpress.Core.ApplicationServices;
 
 namespace GDemoExpress.Core.ApplicationServices
 {

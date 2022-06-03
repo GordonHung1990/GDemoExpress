@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GDemoExpress.DataBase.Entities;
+﻿using GDemoExpress.DataBase.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,17 +11,15 @@ namespace GDemoExpress.DataBase
         {
             using (var scope = webApp.Services.CreateScope())
             {
-                using (var appContext = scope.ServiceProvider.GetRequiredService<DboContext>())
+                using var appContext = scope.ServiceProvider.GetRequiredService<DboContext>();
+                try
                 {
-                    try
-                    {
-                        appContext.Database.Migrate();
-                    }
-                    catch (Exception ex)
-                    {
-                        //Log errors or do anything you think it's needed
-                        throw;
-                    }
+                    appContext.Database.Migrate();
+                }
+                catch (Exception)
+                {
+                    //Log errors or do anything you think it's needed
+                    throw;
                 }
             }
             return webApp;

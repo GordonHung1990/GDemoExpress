@@ -8,7 +8,6 @@ namespace GDemoExpress.DataBase
     {
         DboContext IDesignTimeDbContextFactory<DboContext>.CreateDbContext(string[] args)
         {
-
             var builder = new DbContextOptionsBuilder<DboContext>();
             var connectionString = "Server=localhost;Database=example;User Id=root;Password=1qaz2wsx";
 

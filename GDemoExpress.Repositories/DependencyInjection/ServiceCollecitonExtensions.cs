@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GDemoExpress.Core;
+using GDemoExpress.DataBase.Entities;
+using GDemoExpress.Repositories;
+using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 using StackExchange.Redis;
-using GDemoExpress.Core;
-using GDemoExpress.Repositories;
-using GDemoExpress.DataBase.Entities;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

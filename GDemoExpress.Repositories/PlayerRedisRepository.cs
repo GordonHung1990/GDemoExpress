@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
-using StackExchange.Redis;
-using GDemoExpress.Core.Models;
 using GDemoExpress.Core;
+using GDemoExpress.Core.Models;
+using StackExchange.Redis;
 
 namespace GDemoExpress.Repositories
 {

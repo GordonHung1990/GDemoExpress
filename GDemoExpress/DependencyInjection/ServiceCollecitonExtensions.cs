@@ -1,6 +1,4 @@
-﻿using GDemoExpress;
-
-namespace GDemoExpress.DependencyInjection
+﻿namespace GDemoExpress.DependencyInjection
 {
     public static class ServiceCollecitonExtensions
     {

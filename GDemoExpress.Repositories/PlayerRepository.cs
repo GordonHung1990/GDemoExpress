@@ -1,9 +1,9 @@
-﻿using MassTransit;
-using Microsoft.EntityFrameworkCore;
+﻿using GDemoExpress.Core;
 using GDemoExpress.Core.Models;
-using GDemoExpress.Core;
-using Microsoft.Extensions.Logging;
 using GDemoExpress.DataBase.Entities;
+using MassTransit;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace GDemoExpress.Repositories
 {

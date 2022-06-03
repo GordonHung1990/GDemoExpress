@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using GDemoExpress;
 
 namespace GDemoExpress
 {

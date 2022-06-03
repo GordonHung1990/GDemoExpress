@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -7,6 +6,17 @@ namespace GDemoExpress.DataBase.Migrations
 {
     public partial class InitialCreate : Migration
     {
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "playerinfos",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "players",
+                schema: "dbo");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
@@ -55,17 +65,6 @@ namespace GDemoExpress.DataBase.Migrations
                 table: "players",
                 column: "account",
                 unique: true);
-        }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "playerinfos",
-                schema: "dbo");
-
-            migrationBuilder.DropTable(
-                name: "players",
-                schema: "dbo");
         }
     }
 }

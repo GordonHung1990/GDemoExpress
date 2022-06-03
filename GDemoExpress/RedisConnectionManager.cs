@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
 using StackExchange.Redis;
-using GDemoExpress;
 
 namespace GDemoExpress
 {

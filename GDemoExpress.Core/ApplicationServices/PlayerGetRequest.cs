@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using GDemoExpress.Core.ApplicationServices;
 
 namespace GDemoExpress.Core.ApplicationServices
 {

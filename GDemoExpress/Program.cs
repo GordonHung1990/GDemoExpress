@@ -1,9 +1,8 @@
 using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
-using GDemoExpress.DependencyInjection;
 using GDemoExpress;
 using GDemoExpress.DataBase;
-using GDemoExpress.DataBase.Entities;
+using GDemoExpress.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +65,8 @@ _ = app.UseAuthorization();
 
 _ = app.MapControllers();
 
-_= app.MigrateDatabase();
+_ = app.MigrateDatabase();
+
+_ = app.InitializerDatabase();
 
 app.Run();

@@ -1,10 +1,9 @@
 ﻿using System.Text.Json;
+using GDemoExpress.Core;
+using GDemoExpress.Core.Models;
 using MassTransit;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using GDemoExpress.Core.Models;
-using GDemoExpress.Core;
-using GDemoExpress.Repositories;
 
 namespace GDemoExpress.Repositories
 {

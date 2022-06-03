@@ -4,7 +4,7 @@
   "ContextNamespace": "Entities",
   "DefaultDacpacSchema": null,
   "FilterSchemas": true,
-  "IncludeConnectionString": true,
+  "IncludeConnectionString": false,
   "ModelNamespace": "Entities",
   "OutputContextPath": "Entities",
   "OutputPath": "Entities\/Models",

@@ -1,7 +1,7 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using GDemoExpress.Core.ApplicationServices;
+﻿using GDemoExpress.Core.ApplicationServices;
 using GDemoExpress.ViewModels;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GDemoExpress.Controllers
 {
