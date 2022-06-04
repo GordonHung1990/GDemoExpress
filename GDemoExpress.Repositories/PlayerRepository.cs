@@ -4,17 +4,22 @@ using GDemoExpress.DataBase.Entities;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using NETCore.Encrypt.Extensions;
 
 namespace GDemoExpress.Repositories
 {
     internal class PlayerRepository : IPlayer
     {
         private readonly DboContext _context;
+        private readonly DemoExpressOptions _demoExpress;
         private readonly ILogger<PlayerRepository> _logger;
 
         public PlayerRepository(DboContext context,
-            ILogger<PlayerRepository> logger)
+            ILogger<PlayerRepository> logger,
+            IOptions<DemoExpressOptions> DemoExpressOptions)
         {
+            _demoExpress = DemoExpressOptions.Value;
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
@@ -22,6 +27,7 @@ namespace GDemoExpress.Repositories
         public async ValueTask<Guid> AddAsync(PlayerAdd player)
         {
             var playerId = NewId.NextGuid();
+            var hashed = player.Password.HMACSHA512(_demoExpress.PlayerCryptographyKey);
             using var transaction = _context.Database.BeginTransaction();
             try
             {
@@ -29,7 +35,7 @@ namespace GDemoExpress.Repositories
                 {
                     PlayerId = playerId,
                     Account = player.Account.ToLower(),
-                    Password = player.Password,
+                    Password = hashed,
                     Status = (int)PlayerStatus.ENABLE,
                     CreatedOn = DateTime.UtcNow,
                     UpdatedOn = DateTime.UtcNow

@@ -18,7 +18,10 @@ namespace GDemoExpress.Core.ApplicationServices
 
         public async Task<PlayerGetResponse?> Handle(PlayerGetRequest request, CancellationToken cancellationToken)
         {
+
             var player = await _player.GetAsync(request.PlayerId).ConfigureAwait(false);
+            _logger.LogInformation("LogOn:{logOn} | Request:{request} | Response:{response}",
+                DateTimeOffset.UtcNow.ToString("O"), request, player);
             return player is null
                 ? null
                 : new PlayerGetResponse(

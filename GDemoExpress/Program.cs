@@ -31,7 +31,11 @@ builder.Services
         var configuration = sp.GetRequiredService<IConfiguration>();
         options.ConnectionString = configuration.GetConnectionString("Redis");
     })
-     .AddPlayerServerCore()
+     .AddPlayerServerCore((options, sp) =>
+     {
+         var configuration = sp.GetRequiredService<IConfiguration>();
+         configuration.GetSection("DemoExpress").Bind(options);
+     })
     .AddPlayerServerRepositories(
     (sp, dbBuilder) =>
     {

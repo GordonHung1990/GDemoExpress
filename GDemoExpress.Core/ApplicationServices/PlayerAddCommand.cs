@@ -17,10 +17,16 @@ namespace GDemoExpress.Core.ApplicationServices
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public Task<Guid> Handle(PlayerAddRequest request, CancellationToken cancellationToken)
-            => _player.AddAsync(new PlayerAdd(
+        public async Task<Guid> Handle(PlayerAddRequest request, CancellationToken cancellationToken)
+        {
+            var playerId = await _player.AddAsync(new PlayerAdd(
                 request.Account,
                 request.Password,
-                request.NickName)).AsTask();
+                request.NickName)).ConfigureAwait(false);
+
+            _logger.LogInformation("LogOn:{logOn} | Request:{request} | Response:{response}",
+                DateTimeOffset.UtcNow.ToString("O"), request, playerId);
+            return playerId;
+        }
     }
 }
