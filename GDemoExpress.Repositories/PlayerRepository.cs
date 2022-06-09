@@ -15,7 +15,8 @@ namespace GDemoExpress.Repositories
         private readonly DemoExpressOptions _demoExpress;
         private readonly ILogger<PlayerRepository> _logger;
 
-        public PlayerRepository(DboContext context,
+        public PlayerRepository(
+            DboContext context,
             ILogger<PlayerRepository> logger,
             IOptions<DemoExpressOptions> DemoExpressOptions)
         {
@@ -40,13 +41,13 @@ namespace GDemoExpress.Repositories
                     CreatedOn = DateTime.UtcNow,
                     UpdatedOn = DateTime.UtcNow
                 });
-                _ = await _context.SaveChangesAsync().ConfigureAwait(false);
+                _ = await _context.SaveChangesAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
                 _ = _context.Playerinfos.Add(new Playerinfo()
                 {
                     PlayerId = playerId,
                     NickName = player.NickName
                 });
-                _ = await _context.SaveChangesAsync().ConfigureAwait(false);
+                _ = await _context.SaveChangesAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
                 transaction.Commit();
                 return playerId;
             }
@@ -74,20 +75,20 @@ namespace GDemoExpress.Repositories
                          playerinfo.Mailbox,
                          player.CreatedOn,
                          player.UpdatedOn))
-                .FirstOrDefaultAsync()
+                .FirstOrDefaultAsync(cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
 
         public async ValueTask<PlayerData?> GetAsync(string account, CancellationToken cancellationToken = default)
         {
-            var playerId = await GetByIdAsync(account).ConfigureAwait(false);
-            return !playerId.HasValue ? null : await GetAsync(playerId.Value).ConfigureAwait(false);
+            var playerId = await GetByIdAsync(account, cancellationToken: cancellationToken).ConfigureAwait(false);
+            return !playerId.HasValue ? null : await GetAsync(playerId.Value, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
         public async ValueTask<Guid?> GetByIdAsync(string account, CancellationToken cancellationToken = default)
             => await _context.Players.AsQueryable()
             .Where(x => x.Account == account.ToLower())
             .Select(x => x.PlayerId)
-            .FirstOrDefaultAsync()
+            .FirstOrDefaultAsync(cancellationToken: cancellationToken)
             .ConfigureAwait(false);
 
         public IAsyncEnumerable<PlayerData> QueryAsync(CancellationToken cancellationToken = default)
