@@ -1,6 +1,6 @@
-﻿namespace GDemoExpress.Core.ApplicationServices
+﻿namespace GDemoExpress.Core.Models
 {
-    public record PlayerGetResponse(
+    public record PlayerData(
         Guid PlayerId,
         string Account,
         PlayerStatus Status,

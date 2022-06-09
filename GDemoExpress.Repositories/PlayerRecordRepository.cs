@@ -20,11 +20,11 @@ namespace GDemoExpress.Repositories
             _player = player ?? throw new ArgumentNullException(nameof(player));
         }
 
-        public async ValueTask<Guid> AddAsync(PlayerAdd player)
+        public async ValueTask<Guid> AddAsync(PlayerAdd player, CancellationToken cancellationToken = default)
         {
-            var playerId = await _player.AddAsync(player).ConfigureAwait(false);
+            var playerId = await _player.AddAsync(player, cancellationToken: cancellationToken).ConfigureAwait(false);
 
-            var playerInfo = await _player.GetAsync(playerId).ConfigureAwait(false);
+            var playerInfo = await _player.GetAsync(playerId, cancellationToken: cancellationToken).ConfigureAwait(false);
 
             if (playerInfo == null)
             {
@@ -41,24 +41,27 @@ namespace GDemoExpress.Repositories
             return playerId;
         }
 
-        public ValueTask<PlayerGet?> GetAsync(Guid playerId)
-           => _player.GetAsync(playerId);
+        public ValueTask<PlayerData?> GetAsync(Guid playerId, CancellationToken cancellationToken = default)
+           => _player.GetAsync(playerId, cancellationToken: cancellationToken);
 
-        public ValueTask<PlayerGet?> GetAsync(string account)
-            => _player.GetAsync(account);
+        public ValueTask<PlayerData?> GetAsync(string account, CancellationToken cancellationToken = default)
+            => _player.GetAsync(account, cancellationToken: cancellationToken);
 
-        public ValueTask<Guid?> GetByIdAsync(string account)
-            => _player.GetByIdAsync(account);
+        public ValueTask<Guid?> GetByIdAsync(string account, CancellationToken cancellationToken = default)
+            => _player.GetByIdAsync(account, cancellationToken: cancellationToken);
 
-        public async ValueTask UpdateByPasswordAsync(PlayerUpdateByPassword player)
+        public IAsyncEnumerable<PlayerData> QueryAsync(CancellationToken cancellationToken = default)
+            => _player.QueryAsync(cancellationToken: cancellationToken);
+
+        public async ValueTask UpdateByPasswordAsync(PlayerUpdateByPassword player, CancellationToken cancellationToken = default)
         {
-            var playerInfo = await _player.GetAsync(player.PlayerId).ConfigureAwait(false);
+            var playerInfo = await _player.GetAsync(player.PlayerId, cancellationToken: cancellationToken).ConfigureAwait(false);
 
             if (playerInfo == null)
             {
                 throw new Exception("player does not exist");
             }
-            await _player.UpdateByPasswordAsync(player).ConfigureAwait(false);
+            await _player.UpdateByPasswordAsync(player, cancellationToken: cancellationToken).ConfigureAwait(false);
 
             await AddAsync(new PlayerRecordAdd(
                 PlayerId: playerInfo.PlayerId,
@@ -68,15 +71,15 @@ namespace GDemoExpress.Repositories
                 NewData: JsonSerializer.Serialize(new { }))).ConfigureAwait(false);
         }
 
-        public async ValueTask UpdateByStatusAsync(PlayerUpdateByStatus player)
+        public async ValueTask UpdateByStatusAsync(PlayerUpdateByStatus player, CancellationToken cancellationToken = default)
         {
-            var playerInfo = await _player.GetAsync(player.PlayerId).ConfigureAwait(false);
+            var playerInfo = await _player.GetAsync(player.PlayerId, cancellationToken: cancellationToken).ConfigureAwait(false);
 
             if (playerInfo == null)
             {
                 throw new Exception("player does not exist");
             }
-            await _player.UpdateByStatusAsync(player).ConfigureAwait(false);
+            await _player.UpdateByStatusAsync(player, cancellationToken: cancellationToken).ConfigureAwait(false);
 
             await AddAsync(new PlayerRecordAdd(
                 PlayerId: playerInfo.PlayerId,

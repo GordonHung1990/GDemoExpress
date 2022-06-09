@@ -23,22 +23,22 @@ namespace GDemoExpress.Repositories
             _expiry = expiry;
         }
 
-        public ValueTask<Guid> AddAsync(PlayerAdd player)
-        => _player.AddAsync(player);
+        public ValueTask<Guid> AddAsync(PlayerAdd player, CancellationToken cancellationToken = default)
+        => _player.AddAsync(player, cancellationToken: cancellationToken);
 
-        public async ValueTask<PlayerGet?> GetAsync(string account)
+        public async ValueTask<PlayerData?> GetAsync(string account, CancellationToken cancellationToken = default)
         {
-            var playerId = await GetByIdAsync(account).ConfigureAwait(false);
-            return !playerId.HasValue ? null : await GetAsync(playerId.Value).ConfigureAwait(false);
+            var playerId = await GetByIdAsync(account, cancellationToken: cancellationToken).ConfigureAwait(false);
+            return playerId.HasValue ? null : await GetAsync(playerId.Value, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
-        public async ValueTask<PlayerGet?> GetAsync(Guid playerId)
+        public async ValueTask<PlayerData?> GetAsync(Guid playerId, CancellationToken cancellationToken = default)
         {
             var key = string.Format(KeyPlayerGet, playerId);
-            PlayerGet? playerGet;
+            PlayerData? playerGet;
             if (!await _database.KeyExistsAsync(key).ConfigureAwait(false))
             {
-                playerGet = await _player.GetAsync(playerId).ConfigureAwait(false);
+                playerGet = await _player.GetAsync(playerId, cancellationToken: cancellationToken).ConfigureAwait(false);
 
                 _ = await _database.StringSetAsync(
                 key,
@@ -48,19 +48,19 @@ namespace GDemoExpress.Repositories
 
                 return playerGet;
             }
-            playerGet = JsonSerializer.Deserialize<PlayerGet>(await _database.StringGetAsync(key).ConfigureAwait(false));
+            playerGet = JsonSerializer.Deserialize<PlayerData>(await _database.StringGetAsync(key).ConfigureAwait(false));
 
             return playerGet;
         }
 
-        public async ValueTask<Guid?> GetByIdAsync(string account)
+        public async ValueTask<Guid?> GetByIdAsync(string account, CancellationToken cancellationToken = default)
         {
             var key = string.Format(KeyPlayerAccount, account);
 
             Guid? playerId;
             if (!await _database.KeyExistsAsync(key).ConfigureAwait(false))
             {
-                playerId = await _player.GetByIdAsync(account).ConfigureAwait(false);
+                playerId = await _player.GetByIdAsync(account, cancellationToken: cancellationToken).ConfigureAwait(false);
                 if (!playerId.HasValue)
                 {
                     return playerId;
@@ -76,14 +76,17 @@ namespace GDemoExpress.Repositories
             return playerId;
         }
 
-        public async ValueTask UpdateByPasswordAsync(PlayerUpdateByPassword player)
-        => await _player.UpdateByPasswordAsync(player).ConfigureAwait(false);
+        public IAsyncEnumerable<PlayerData> QueryAsync(CancellationToken cancellationToken = default)
+            => _player.QueryAsync(cancellationToken: cancellationToken);
 
-        public async ValueTask UpdateByStatusAsync(PlayerUpdateByStatus player)
+        public async ValueTask UpdateByPasswordAsync(PlayerUpdateByPassword player, CancellationToken cancellationToken = default)
+        => await _player.UpdateByPasswordAsync(player, cancellationToken: cancellationToken).ConfigureAwait(false);
+
+        public async ValueTask UpdateByStatusAsync(PlayerUpdateByStatus player, CancellationToken cancellationToken = default)
         {
-            await _player.UpdateByStatusAsync(player).ConfigureAwait(false);
+            await _player.UpdateByStatusAsync(player, cancellationToken: cancellationToken).ConfigureAwait(false);
 
-            var playerGet = await _player.GetAsync(player.PlayerId).ConfigureAwait(false);
+            var playerGet = await _player.GetAsync(player.PlayerId, cancellationToken: cancellationToken).ConfigureAwait(false);
             if (playerGet is null)
             {
                 return;

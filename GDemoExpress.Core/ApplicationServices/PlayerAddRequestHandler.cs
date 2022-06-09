@@ -4,14 +4,14 @@ using Microsoft.Extensions.Logging;
 
 namespace GDemoExpress.Core.ApplicationServices
 {
-    internal class PlayerAddCommand : IRequestHandler<PlayerAddRequest, Guid>
+    internal class PlayerAddRequestHandler : IRequestHandler<PlayerAddRequest, Guid>
     {
-        private readonly ILogger<PlayerAddCommand> _logger;
+        private readonly ILogger<PlayerAddRequestHandler> _logger;
         private readonly IPlayer _player;
 
-        public PlayerAddCommand(
+        public PlayerAddRequestHandler(
             IPlayer player,
-            ILogger<PlayerAddCommand> logger)
+            ILogger<PlayerAddRequestHandler> logger)
         {
             _player = player ?? throw new ArgumentNullException(nameof(player));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));

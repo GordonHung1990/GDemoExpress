@@ -16,14 +16,7 @@ namespace GDemoExpress.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        [HttpGet("{playerId}")]
-        public Task<PlayerGetResponse?> AddAsync(Guid playerId)
-            => _mediator.Send(new PlayerGetRequest()
-            {
-                PlayerId = playerId,
-            });
-
-        [HttpPost]
+        [HttpPost(Name = "Player_Add")]
         public Task<Guid> AddAsync(PlayerAddViewModel model)
             => _mediator.Send(new PlayerAddRequest()
             {
@@ -31,5 +24,45 @@ namespace GDemoExpress.Controllers
                 Password = model.Password,
                 NickName = model.NickName,
             });
+
+        [HttpGet("{playerId}", Name = "Player_Get")]
+        public async Task<PlayerViewModel?> GetAsync(Guid playerId)
+        {
+            var data = await _mediator.Send(new PlayerGetRequest()
+            {
+                PlayerId = playerId,
+            }).ConfigureAwait(false);
+
+            return data is null ? null : new PlayerViewModel(
+                PlayerId: data.PlayerId,
+                Account: data.Account,
+                Status: data.Status,
+                LastName: data.LastName,
+                FullName: data.FullName,
+                NickName: data.NickName,
+                PhoneNumber: data.PhoneNumber,
+                Mailbox: data.Mailbox,
+                CreatedOn: data.CreatedOn,
+                UpdatedOn: data.UpdatedOn);
+        }
+
+        [HttpGet(Name = "Player_Query")]
+        public async Task<IEnumerable<PlayerViewModel>?> QueryAsync()
+        {
+            var datas = await _mediator.Send(new PlayerQueryRequest()).ConfigureAwait(false);
+
+            return datas is null || !datas.Any() ? null :
+                datas.Select(data => new PlayerViewModel(
+                PlayerId: data.PlayerId,
+                Account: data.Account,
+                Status: data.Status,
+                LastName: data.LastName,
+                FullName: data.FullName,
+                NickName: data.NickName,
+                PhoneNumber: data.PhoneNumber,
+                Mailbox: data.Mailbox,
+                CreatedOn: data.CreatedOn,
+                UpdatedOn: data.UpdatedOn));
+        }
     }
 }

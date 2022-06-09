@@ -24,7 +24,7 @@ namespace GDemoExpress.Repositories
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async ValueTask<Guid> AddAsync(PlayerAdd player)
+        public async ValueTask<Guid> AddAsync(PlayerAdd player, CancellationToken cancellationToken = default)
         {
             var playerId = NewId.NextGuid();
             var hashed = player.Password.HMACSHA512(_demoExpress.PlayerCryptographyKey);
@@ -58,12 +58,12 @@ namespace GDemoExpress.Repositories
             }
         }
 
-        public async ValueTask<PlayerGet?> GetAsync(Guid playerId)
+        public async ValueTask<PlayerData?> GetAsync(Guid playerId, CancellationToken cancellationToken = default)
             => await (from player in _context.Players.AsQueryable()
                       join playerinfo in _context.Playerinfos.AsQueryable()
-                     on player.PlayerId equals playerinfo.PlayerId
+                      on player.PlayerId equals playerinfo.PlayerId
                       where player.PlayerId == playerId
-                      select new PlayerGet(
+                      select new PlayerData(
                          player.PlayerId,
                          player.Account,
                          (PlayerStatus)player.Status,
@@ -77,21 +77,39 @@ namespace GDemoExpress.Repositories
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
 
-        public async ValueTask<PlayerGet?> GetAsync(string account)
+        public async ValueTask<PlayerData?> GetAsync(string account, CancellationToken cancellationToken = default)
         {
             var playerId = await GetByIdAsync(account).ConfigureAwait(false);
             return !playerId.HasValue ? null : await GetAsync(playerId.Value).ConfigureAwait(false);
         }
 
-        public async ValueTask<Guid?> GetByIdAsync(string account)
+        public async ValueTask<Guid?> GetByIdAsync(string account, CancellationToken cancellationToken = default)
             => await _context.Players.AsQueryable()
             .Where(x => x.Account == account.ToLower())
             .Select(x => x.PlayerId)
             .FirstOrDefaultAsync()
             .ConfigureAwait(false);
 
-        public ValueTask UpdateByPasswordAsync(PlayerUpdateByPassword player) => throw new NotImplementedException();
+        public IAsyncEnumerable<PlayerData> QueryAsync(CancellationToken cancellationToken = default)
+            => _context.Players.AsQueryable()
+                .Join(_context.Playerinfos.AsQueryable(),
+                    player => player.PlayerId,
+                    playerinfo => playerinfo.PlayerId,
+                    (player, playerinfo) => new PlayerData(
+                        player.PlayerId,
+                        player.Account,
+                        (PlayerStatus)player.Status,
+                        playerinfo.LastName,
+                        playerinfo.FullName,
+                        playerinfo.NickName,
+                        playerinfo.PhoneNumber,
+                        playerinfo.Mailbox,
+                        player.CreatedOn,
+                        player.UpdatedOn)
+                    ).ToAsyncEnumerable();
 
-        public ValueTask UpdateByStatusAsync(PlayerUpdateByStatus player) => throw new NotImplementedException();
+        public ValueTask UpdateByPasswordAsync(PlayerUpdateByPassword player, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+
+        public ValueTask UpdateByStatusAsync(PlayerUpdateByStatus player, CancellationToken cancellationToken = default) => throw new NotImplementedException();
     }
 }

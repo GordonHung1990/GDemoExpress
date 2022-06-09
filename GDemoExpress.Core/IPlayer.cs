@@ -4,16 +4,18 @@ namespace GDemoExpress.Core
 {
     public interface IPlayer
     {
-        public ValueTask<Guid> AddAsync(PlayerAdd player);
+        ValueTask<Guid> AddAsync(PlayerAdd player, CancellationToken cancellationToken = default);
 
-        public ValueTask<PlayerGet?> GetAsync(Guid playerId);
+        ValueTask<PlayerData?> GetAsync(Guid playerId, CancellationToken cancellationToken = default);
 
-        public ValueTask<PlayerGet?> GetAsync(string account);
+        ValueTask<PlayerData?> GetAsync(string account, CancellationToken cancellationToken = default);
 
-        public ValueTask<Guid?> GetByIdAsync(string account);
+        ValueTask<Guid?> GetByIdAsync(string account, CancellationToken cancellationToken = default);
 
-        public ValueTask UpdateByPasswordAsync(PlayerUpdateByPassword player);
+        IAsyncEnumerable<PlayerData> QueryAsync(CancellationToken cancellationToken = default);
 
-        public ValueTask UpdateByStatusAsync(PlayerUpdateByStatus player);
+        ValueTask UpdateByPasswordAsync(PlayerUpdateByPassword player, CancellationToken cancellationToken = default);
+
+        ValueTask UpdateByStatusAsync(PlayerUpdateByStatus player, CancellationToken cancellationToken = default);
     }
 }
